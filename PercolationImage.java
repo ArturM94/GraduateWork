@@ -20,10 +20,10 @@ import javax.imageio.ImageIO;
  * @author Artur Manukian
  */
 
-public class PercolationImage
-{
-    public static void main(String[] args) throws IOException
-    {
+public class PercolationImage {
+
+    public static void main(String[] args) throws IOException {
+
         /* Переменные */
         int i, j; // x и y узлов решетки.
         int height = 500; // Высота.
@@ -111,8 +111,8 @@ public class PercolationImage
     }
 
     /* Рекурсивный алгоритм заливки */
-    private void fillGrid(double[][] grid, int x, int y)
-    {
+    private void fillGrid(double[][] grid, int x, int y) {
+
         if (grid[x][y] == 1) {
             // Если узле свободен, присваивается
             // значение 2 и узел становится заполненным.

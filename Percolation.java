@@ -11,8 +11,8 @@ import java.util.Locale;
  * @author Artur Manukian
  */
 
-public class Percolation
-{
+public class Percolation {
+
     public static void main(String[] args) {
 
         /* Переменные */
@@ -108,8 +108,8 @@ public class Percolation
     }
 
     /* Рекурсивный алгоритм заливки */
-    private void fillGrid(double[][] grid, int i, int j)
-    {
+    private void fillGrid(double[][] grid, int i, int j) {
+
         if (grid[i][j] == 1) {
             // Если узле свободен, присваивается
             // значение 2 и узел становится заполненным.
