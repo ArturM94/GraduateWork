@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 
 /**
  * PercolationImage
@@ -21,7 +20,7 @@ import javax.swing.JPanel;
  * @author Artur Manukian
  */
 
-public class PercolationImage extends JPanel
+public class PercolationImage
 {
     public static void main(String[] args) throws IOException
     {
