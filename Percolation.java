@@ -45,7 +45,7 @@ public class Percolation {
 
                 /* Препятствия на границах */
                 // Инициализация перколяционной решетки.
-                double[][] grid = new double[M + 2][N + 2];
+                int[][] grid = new int[M + 2][N + 2];
                 for (i = 0; i < M + 2; i++) {
                     // Заполнение всех i-тых строк
                     // нулевыми значениями.
@@ -108,7 +108,7 @@ public class Percolation {
     }
 
     /* Рекурсивный алгоритм заливки */
-    private void fillGrid(double[][] grid, int i, int j) {
+    private void fillGrid(int[][] grid, int i, int j) {
 
         if (grid[i][j] == 1) {
             // Если узле свободен, присваивается
