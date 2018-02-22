@@ -23,11 +23,11 @@ public class Diffusion {
 
         /* Переменные */
         int i, j; // x и y сетки.
-        int size = 40; // Размер сетки.
+        int sizeGrid = 40; // Размер сетки.
         int n = 100; // Количество итераций.
         double t = 0; // Граничное условие первого рода (температура).
-        double [][] T = new double[size][size]; // Временной слой.
-        double [][] newT = new double[size][size]; // Новый временной слой.
+        double [][] T = new double[sizeGrid][sizeGrid]; // Временной слой.
+        double [][] newT = new double[sizeGrid][sizeGrid]; // Новый временной слой.
 
         // Значения
         // lambda - теплопроводность,
@@ -44,7 +44,7 @@ public class Diffusion {
 
         // Концентрация и координаты
         // для одного источника.
-        double conc1, conc2, conc3;
+        double firstPointConcentration, secondPointConcentration, thirdPointConcentration;
         int xChimney = 20;
         int yChimney = 20;
         double Q = 2;
@@ -67,27 +67,27 @@ public class Diffusion {
         }
 
         /* Заполнение сетки нулевыми значениями */
-        for (i = 0; i < size; i++) {
-            for (j = 0; j < size; j++) {
+        for (i = 0; i < sizeGrid; i++) {
+            for (j = 0; j < sizeGrid; j++) {
                 T[i][j] = 0;
             }
         }
 
         /* Граничные условия */
         // Для левой и правой границы.
-        for (i = 0; i < size; i++) {
+        for (i = 0; i < sizeGrid; i++) {
             T[i][0] = t; // Все i-тые элементы для нулевого j-того.
-            T[i][size - 1] = t; // Все i-тые элементы для максимального j-того.
+            T[i][sizeGrid - 1] = t; // Все i-тые элементы для максимального j-того.
         }
         // Для верхней и нижней границы.
-        for (j = 0; j < size; j++) {
+        for (j = 0; j < sizeGrid; j++) {
             T[0][j] = t; // Все j-тые элементы для нулевого i-того.
-            T[size - 1][j] = t; // Все j-тые элементы для максимального i-того.
+            T[sizeGrid - 1][j] = t; // Все j-тые элементы для максимального i-того.
         }
 
         /* Сетка с граничными условиями */
-        for (i = 0; i < size; i++) {
-            for (j = 0; j < size; j++) {
+        for (i = 0; i < sizeGrid; i++) {
+            for (j = 0; j < sizeGrid; j++) {
                 // Дублирование начальных значений для нового временного слоя.
                 newT[i][j] = T[i][j];
             }
@@ -95,8 +95,8 @@ public class Diffusion {
 
         /* Уравнение диффузии для одного источника */
         for (int counter = 0; counter < n; counter++) {
-            for (i = 1; i < size - 1; i++) {
-                for (j = 1; j < size - 1; j++) {
+            for (i = 1; i < sizeGrid - 1; i++) {
+                for (j = 1; j < sizeGrid - 1; j++) {
                     // Источник загрязнения.
                     if (i == yChimney && j == xChimney){
                         T[i][j] = newT[i][j] + ((lambda * tau) / (ro * c) * ((newT[i+1][j] + newT[i-1][j] + newT[i][j+1] + newT[i][j-1] - 4 * newT[i][j]) / Math.pow(h, 2))) + Q;
@@ -106,8 +106,8 @@ public class Diffusion {
                 }
             }
             // Перезапись на новый временной слой.
-            for (i = 1; i < size - 1; i++) {
-                for (j = 1; j < size - 1; j++) {
+            for (i = 1; i < sizeGrid - 1; i++) {
+                for (j = 1; j < sizeGrid - 1; j++) {
                     newT[i][j] = T[i][j];
                 }
             }
@@ -141,8 +141,8 @@ public class Diffusion {
         /* Вывод сетки в консоль */
         // Необязательная функция.
         System.out.println("Сетка с источником загрязнения:");
-        for (i = 1; i < size - 1; i++) {
-            for (j = 1; j < size - 1; j++) {
+        for (i = 1; i < sizeGrid - 1; i++) {
+            for (j = 1; j < sizeGrid - 1; j++) {
                 System.out.print(String.format(Locale.ENGLISH, "%(.2f", newT[i][j]) + " ");
             }
             System.out.println();
@@ -150,23 +150,23 @@ public class Diffusion {
         System.out.println();
 
         /* Вывод данных в файл */
-        PrintWriter out = new PrintWriter(new OutputStreamWriter(new FileOutputStream("C:\\Users\\Artur\\Desktop\\DiffusionData.txt")), true);
-        for (i = 1; i < size - 1; i++) {
-            for (j = 1; j < size - 1; j++) {
-                out.printf(String.format("%(.2f", newT[i][j])+" ");
+        PrintWriter outputToTxt = new PrintWriter(new OutputStreamWriter(new FileOutputStream("C:\\Users\\Artur\\Desktop\\DiffusionData.txt")), true);
+        for (i = 1; i < sizeGrid - 1; i++) {
+            for (j = 1; j < sizeGrid - 1; j++) {
+                outputToTxt.printf(String.format("%(.2f", newT[i][j])+" ");
             }
-            out.println();
+            outputToTxt.println();
         }
-        out.println();
+        outputToTxt.println();
 
         /* Снятие концентрации в точках */
-        conc1 = T[yChimney][xChimney - 3];
-        conc2 = T[yChimney][xChimney - 6];
-        conc3 = T[yChimney][xChimney - 9];
+        firstPointConcentration = T[yChimney][xChimney - 3];
+        secondPointConcentration = T[yChimney][xChimney - 6];
+        thirdPointConcentration = T[yChimney][xChimney - 9];
 
-        System.out.println("Концентрация в точке 1: " + String.format("%(.3f", conc1));
-        System.out.println("Концентрация в точке 2: " + String.format("%(.3f", conc2));
-        System.out.println("Концентрация в точке 3: " + String.format("%(.3f", conc3));
+        System.out.println("Концентрация в точке 1: " + String.format("%(.3f", firstPointConcentration));
+        System.out.println("Концентрация в точке 2: " + String.format("%(.3f", secondPointConcentration));
+        System.out.println("Концентрация в точке 3: " + String.format("%(.3f", thirdPointConcentration));
 
         System.out.println("\nУсловие устойчивости схемы: " + String.format(Locale.ENGLISH, "%(.5f", stability));
         System.out.println("lambda: " + lambda);

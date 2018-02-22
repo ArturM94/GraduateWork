@@ -26,21 +26,21 @@ public class PercolationImage {
 
         /* Переменные */
         int i, j; // x и y узлов решетки.
-        int height = 500; // Высота.
-        int width = 500; // Ширина.
+        int heightGrid = 500; // Высота.
+        int widthGrid = 500; // Ширина.
         double p = 0.45; // Вероятность занятости узла.
 
         /* Препятствия на границах */
         // Инициализация перколяционной решетки.
-        int[][] grid = new int[height + 2][width + 2];
-        for (i = 0; i < width + 2; i++) {
+        int[][] grid = new int[heightGrid + 2][widthGrid + 2];
+        for (i = 0; i < widthGrid + 2; i++) {
             // Заполнение всех строк
             // нулевыми значениями.
-            Arrays.fill(grid[height], 0);
+            Arrays.fill(grid[heightGrid], 0);
         }
 
         /* Задание решетки с одинаковой степенью занятости узлов */
-        /*for (i = 1; i < height + 1; i++) {
+        /*for (i = 1; i < heightGrid + 1; i++) {
             for (j = 1; j < width + 1; j++) {
                 // С помощью рандомайзера разыгрывается состояние узла.
                 // 0 - если узел занят.
@@ -50,17 +50,17 @@ public class PercolationImage {
         }*/
 
         /* Задание решетки с разной степенью занятости узлов */
-        for (i = 1; i < height + 1; i++) {
-            for (j = 1; j < width + 1; j++) {
+        for (i = 1; i < heightGrid + 1; i++) {
+            for (j = 1; j < widthGrid + 1; j++) {
                 if (i < 100) {
                     grid[i][j] = Math.random() <= p - 0.16 ? 0 : 1;
-                } else if (i >= height / 5 & i < height / 5 * 2) {
+                } else if (i >= heightGrid / 5 & i < heightGrid / 5 * 2) {
                     grid[i][j] = Math.random() <= p - 0.08 ? 0 : 1;
-                } else if (i >= height / 5 * 2 & i < height / 5 * 3) {
+                } else if (i >= heightGrid / 5 * 2 & i < heightGrid / 5 * 3) {
                     grid[i][j] = Math.random() <= p - 0.04 ? 0 : 1;
-                } else if (i >= height / 5 * 3 & i < height / 5 * 4) {
+                } else if (i >= heightGrid / 5 * 3 & i < heightGrid / 5 * 4) {
                     grid[i][j] = Math.random() <= p - 0.02 ? 0 : 1;
-                } else if (i >= height / 5 * 4 & i <= height) {
+                } else if (i >= heightGrid / 5 * 4 & i <= heightGrid) {
                     grid[i][j] = Math.random() <= p ? 0 : 1;
                 }
             }
@@ -84,7 +84,7 @@ public class PercolationImage {
         // узлов верхней границы решетки.
         int x, y;
         for (x = 1; x < 2; x++) {
-            for (y = 1; y < width + 1; y++){
+            for (y = 1; y < widthGrid + 1; y++){
                 if (grid[x][y] == 1) {
                     PercolationImage floodFill = new PercolationImage();
                     floodFill.fillGrid(grid, x, y);
@@ -93,21 +93,21 @@ public class PercolationImage {
         }
 
         /* Отрисовки и сохранения изображения */
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        for (y = 0; y < height; y++) {
-            for (x = 0; x < width; x++) {
+        BufferedImage outputToImage = new BufferedImage(widthGrid, heightGrid, BufferedImage.TYPE_INT_RGB);
+        for (y = 0; y < heightGrid; y++) {
+            for (x = 0; x < widthGrid; x++) {
                 if (grid[y][x] == 2) {
                     // Для всех заполненных узлов
                     // присваивается черный цвет пикселя.
-                    image.setRGB(x, y, 0x000000);
+                    outputToImage.setRGB(x, y, 0x000000);
                 } else {
                     // Для всех остальных узлов
                     // присваивается белый цвет пикселя.
-                    image.setRGB(x, y, 0xffffff);
+                    outputToImage.setRGB(x, y, 0xffffff);
                 }
             }
         }
-        ImageIO.write(image, "png", new File("C:\\Users\\Artur\\Desktop\\percolation.png"));
+        ImageIO.write(outputToImage, "png", new File("C:\\Users\\Artur\\Desktop\\percolation.png"));
     }
 
     /* Рекурсивный алгоритм заливки */

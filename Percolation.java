@@ -17,9 +17,9 @@ public class Percolation {
 
         /* Переменные */
         int i, j; // x и y узлов решетки.
-        int M = 100; // Размер
-        int N = 100; // сетки.
-        int countCluster = 0; // Счетчик стягивающих кластеров.
+        int heightGrid = 100; // Размер
+        int widthGrid = 100; // сетки.
+        int counterOfClusters = 0; // Счетчик стягивающих кластеров.
         int n = 1000; // Количество итераций.
         // Вероятность образования
         // стягивающего кластера.
@@ -34,7 +34,7 @@ public class Percolation {
         /* Вывод общих сведений */
         System.out.println("Алгоритм рекурсивной заливки для перколяционной решетки");
         System.out.println("\nПерколяция методом Монте-Карло");
-        System.out.println("Решетка: " + M + " х " + N);
+        System.out.println("Решетка: " + heightGrid + " х " + widthGrid);
         System.out.println("Количество итераций: " + n);
 
         /* Цикл для расчета заданного диапазона p */
@@ -45,16 +45,16 @@ public class Percolation {
 
                 /* Препятствия на границах */
                 // Инициализация перколяционной решетки.
-                int[][] grid = new int[M + 2][N + 2];
-                for (i = 0; i < M + 2; i++) {
+                int[][] grid = new int[heightGrid + 2][widthGrid + 2];
+                for (i = 0; i < heightGrid + 2; i++) {
                     // Заполнение всех i-тых строк
                     // нулевыми значениями.
                     Arrays.fill(grid[i], 0);
                 }
 
                 /* Заполнение решетки */
-                for (i = 1; i < M + 1; i++) {
-                    for (j = 1; j < N + 1; j++) {
+                for (i = 1; i < heightGrid + 1; i++) {
+                    for (j = 1; j < widthGrid + 1; j++) {
                         // С помощью рандомайзера разыгрывается состояние узла.
                         // 0 - если узел занят.
                         // 1 - если узел свободен.
@@ -66,7 +66,7 @@ public class Percolation {
                 // Протекание начинается из всех свободных
                 // узлов верхней границы решетки.
                 for (i = 1; i < 2; i++) {
-                    for (j = 1; j < N + 1; j++){
+                    for (j = 1; j < widthGrid + 1; j++){
                         // Если узел свободен, то вызывается
                         // рекурсивный метод fillGrid.
                         if (grid[i][j] == 1) {
@@ -78,14 +78,14 @@ public class Percolation {
 
                 /* Проверка наличия стягивающего кластера */
                 // Проверка всех элементов последней строки.
-                for (i = M; i < M + 1; i++) {
-                    for (j = 1; j < N + 1; j++) {
+                for (i = heightGrid; i < heightGrid + 1; i++) {
+                    for (j = 1; j < widthGrid + 1; j++) {
                         // 2 - заполненный узел.
                         // Если один из узлов последней строки является заполненным,
                         // значит протекание дошло до нижней границы и, соответственно,
                         // образовался стягивающий кластер.
                         if (grid[i][j] == 2) {
-                            countCluster++;
+                            counterOfClusters++;
                             // Прерывание цикла, поскольку важен сам факт образования
                             // стягивающего кластера и нет необходимости в дальнейшем
                             // приросте счетчика на текущей итерации.
@@ -96,14 +96,14 @@ public class Percolation {
             }
             // Расчет вероятности образования
             // стягивающего кластера.
-            probability = (double) countCluster / n;
+            probability = (double) counterOfClusters / n;
 
             System.out.println("\nВероятность занятости узла: p = " + String.format(Locale.ENGLISH, "%(.2f", p));
-            System.out.println("Стягивающих кластеров: " + countCluster);
+            System.out.println("Стягивающих кластеров: " + counterOfClusters);
             System.out.println("Вероятность образования стягивающего кластера: Pc = " + probability);
             // Обнуление счетчика кластеров для текущего
             // значения p после его вывода в консоль.
-            countCluster = 0;
+            counterOfClusters = 0;
         }
     }
 
